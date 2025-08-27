@@ -3,7 +3,13 @@ import React, { useState } from "react";
 const Calculator=()=>{
     const[input, setInput]=useState("");
     const handleClick=(value)=>{
-        setInput((prev)=>prev+value)
+        if(["+","-","*","/"].includes(value)){
+           setInput((prev)=>prev + " "+ value + " ");
+
+        }else{
+            setInput((prev)=>prev+value)
+        }
+        
     }
     const handleClear=()=>{
         console.log("Clear");
@@ -11,11 +17,12 @@ const Calculator=()=>{
     }
     const handleEqual=()=>{
         try{
-            if(/[\+\-\*\/]$/.test(input)) {
+            const trimmed=input.trim();
+            if(/[\+\-\*\/]$/.test(trimmed) || trimmed ==="") {
                 setInput("Error");
                 return;
             }
-            const result=eval(input);
+            const result=eval(trimmed);
             if(result===Infinity){
                 setInput("Infinity");
             }else if(isNaN(result)){
