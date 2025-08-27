@@ -7,27 +7,35 @@ const Calculator=()=>{
         console.log("Clear");
         setInput("");
     }
-    const handleEqual=()=>{
-        try{
-            const trimmed=input.trim();
-            if (/[\+\-\*\/]\s*$/.test(trimmed) || trimmed === "") {
-                setInput("Error");
-                return;
-            }
+const handleEqual = () => {
+  try {
+    const trimmed = input.trim();
 
-            const result = Function(`return ${trimmed}`)();
-            if(result===Infinity){
-                setInput("Infinity");
-            }else if(isNaN(result)){
-                setInput("NaN");
-            }else{
-                setInput(result.toString());
-            }
-           
-        }catch(error){
-            setInput("Error");
-        }
+    // Check if input is empty
+    if (trimmed === "") {
+      setInput("Error");
+      return;
     }
+
+    const lastChar=trimmed[trimmed.length-1];
+    if(["+","-","*","/"].includes(lastChar)){
+        setInput("Error");
+        return;
+    }
+    const result=Function(`return ${trimmed}`)();
+    if(result===Infinity){
+        setInput("Infinity");
+    }else if(isNaN(result)){
+        setInput("NaN")
+    }else{
+        setInput(result.toString());
+    }
+   
+  } catch (error) {
+    setInput("Error");
+  }
+};
+
     const handleClick=(value)=>{
         switch(value){
             case "C":
@@ -41,11 +49,11 @@ const Calculator=()=>{
             case "*":
             case "/":
                 setInput((prev)=>{
-                    if(/[\+\-\*\/]\s*$/.test(prev)){
+                    
+                    if(prev === "" ||["+","-","*","/"].includes(prev.slice(-1))){
                         return prev;
-                    }else{
-                        return prev +" " + value+ " ";
                     }
+                    return prev+ value ;
                 });
                 break;
             default:
