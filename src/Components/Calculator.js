@@ -18,10 +18,11 @@ const Calculator=()=>{
     const handleEqual=()=>{
         try{
             const trimmed=input.trim();
-            if(/[\+\-\*\/]$/.test(trimmed) || trimmed ==="") {
+            if (/[\+\-\*\/]\s*$/.test(trimmed) || trimmed === "") {
                 setInput("Error");
                 return;
             }
+
             const result=eval(trimmed);
             if(result===Infinity){
                 setInput("Infinity");
