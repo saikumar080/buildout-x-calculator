@@ -11,7 +11,7 @@ const Calculator=()=>{
     }
     const handleEqual=()=>{
         try{
-            if(/[\+\-\*\/$/.]$/.test(input)) {
+            if(/[\+\-\*\/]$/.test(input)) {
                 setInput("Error");
                 return;
             }
@@ -31,9 +31,9 @@ const Calculator=()=>{
     return(
         <div >
             <h1>React Calculator </h1>
-            <input style={{margin:10,width:"350px",height:"50px",borderRadius:"10px", border:"2px solid orange",  fontSize: "20px",
+            <input type={"text"} value={input} readOnly style={{margin:10,width:"350px",height:"50px",borderRadius:"10px", border:"2px solid orange",  fontSize: "20px",
           textAlign: "right",
-          padding: "10px",}} value={input} ></input>
+          padding: "10px",}}  ></input>
           {/* <p>{input}</p> */}
             <div className={"row1"} style={{marginTop:"10px"}}>
                 <button style={{margin:10, padding:32,borderRadius:"8px",border:"2px solid green",cursor:"pointer"}} onClick={()=> handleClick("7")}>7</button>
