@@ -2,15 +2,7 @@ import React, { useState } from "react";
 
 const Calculator=()=>{
     const[input, setInput]=useState("");
-    const handleClick=(value)=>{
-        if(["+","-","*","/"].includes(value)){
-           setInput((prev)=>prev + " "+ value + " ");
 
-        }else{
-            setInput((prev)=>prev+value)
-        }
-        
-    }
     const handleClear=()=>{
         console.log("Clear");
         setInput("");
@@ -23,7 +15,7 @@ const Calculator=()=>{
                 return;
             }
 
-            const result=eval(trimmed);
+            const result = Function(`return ${trimmed}`)();
             if(result===Infinity){
                 setInput("Infinity");
             }else if(isNaN(result)){
@@ -36,6 +28,33 @@ const Calculator=()=>{
             setInput("Error");
         }
     }
+    const handleClick=(value)=>{
+        switch(value){
+            case "C":
+                handleClear();
+                break;
+            case "=":
+                handleEqual();
+                break;
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+                setInput((prev)=>{
+                    if(/[\+\-\*\/]\s*$/.test(prev)){
+                        return prev;
+                    }else{
+                        return prev +" " + value+ " ";
+                    }
+                });
+                break;
+            default:
+                setInput((prev)=>prev + value);
+
+        }
+    }
+
+    const buttons=[["7","8","9","+"],["4","5","6","-"],["1","2","3","*"],["C","0","=","/"]];
     return(
         <div >
             <h1>React Calculator </h1>
@@ -43,13 +62,14 @@ const Calculator=()=>{
           textAlign: "right",
           padding: "10px",}}  ></input>
           {/* <p>{input}</p> */}
-            <div className={"row1"} style={{marginTop:"10px"}}>
-                <button style={{margin:10, padding:32,borderRadius:"8px",border:"2px solid green",cursor:"pointer"}} onClick={()=> handleClick("7")}>7</button>
-                 <button style={{margin:10, padding:32,borderRadius:"8px",border:"2px solid green",cursor:"pointer"}} onClick={()=> handleClick("8")}>8</button>
-                  <button style={{margin:10, padding:32,borderRadius:"8px",border:"2px solid green",cursor:"pointer"}} onClick={()=> handleClick("9")}>9</button>
-                   <button style={{margin:10, padding:32, borderRadius:"8px", border:"2px solid green",cursor:"pointer"}} onClick={()=> handleClick("+")}>+</button>
+           {buttons.map((row,rowIndex)=>(
+            <div key={rowIndex} style={{marginTop:10}}>
+                {row.map((btn)=>(
+                    <button key={btn} style={{margin:10, padding:32,borderRadius:"8px",border:"2px solid green",cursor:"pointer"}} onClick={()=>handleClick(btn)}>{btn}</button>
+                ))}
             </div>
-            <div className={"row2"} style={{marginTop:"10px"}}>
+           ))}
+            {/* <div className={"row2"} style={{marginTop:"10px"}}>
                 <button style={{margin:10, padding:32,borderRadius:"8px",border:"2px solid green",cursor:"pointer"}} onClick={()=>handleClick("4")}>4</button>
                  <button style={{margin:10, padding:32,borderRadius:"8px",border:"2px solid green",cursor:"pointer"}} onClick={()=> handleClick("5")}>5</button>
                   <button style={{margin:10, padding:32,borderRadius:"8px",border:"2px solid green",cursor:"pointer"}} onClick={()=> handleClick("6")}>6</button>
@@ -66,7 +86,7 @@ const Calculator=()=>{
                  <button style={{margin:10, padding:32,borderRadius:"8px",border:"2px solid green",cursor:"pointer"}} onClick={()=> handleClick("0")}>0</button>
                   <button style={{margin:10, padding:32,borderRadius:"8px",border:"2px solid green",cursor:"pointer"}} onClick={handleEqual}>=</button>
                    <button style={{margin:10, padding:32, borderRadius:"8px", border:"2px solid green",cursor:"pointer"}} onClick={()=> handleClick("/")}>/</button>
-            </div>
+            </div> */}
         </div>
     )
 }
