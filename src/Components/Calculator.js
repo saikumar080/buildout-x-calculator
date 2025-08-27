@@ -11,8 +11,19 @@ const Calculator=()=>{
     }
     const handleEqual=()=>{
         try{
+            if(/[\+\-\*\/$/.]$/.test(input)) {
+                setInput("Error");
+                return;
+            }
             const result=eval(input);
-            setInput(result.toString());
+            if(result===Infinity){
+                setInput("Infinity");
+            }else if(isNaN(result)){
+                setInput("NaN");
+            }else{
+                setInput(result.toString());
+            }
+           
         }catch(error){
             setInput("Error");
         }
