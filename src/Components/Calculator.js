@@ -2,10 +2,12 @@ import React, { useState } from "react";
 
 const Calculator=()=>{
     const[input, setInput]=useState("");
+    const [result, setResult] = useState("");
 
     const handleClear=()=>{
         console.log("Clear");
         setInput("");
+        setResult("");
     }
 const handleEqual = () => {
   try {
@@ -13,26 +15,26 @@ const handleEqual = () => {
 
     // Check if input is empty
     if (trimmed === "") {
-      setInput("Error");
+      setResult("Error");
       return;
     }
 
     const lastChar=trimmed[trimmed.length-1];
     if(["+","-","*","/"].includes(lastChar)){
-        setInput("Error");
+        setResult("Error");
         return;
     }
     const result=Function(`return ${trimmed}`)();
     if(result===Infinity){
-        setInput("Infinity");
+        setResult("Infinity");
     }else if(isNaN(result)){
-        setInput("NaN")
+        setResult("NaN")
     }else{
-        setInput(result.toString());
+        setResult(result.toString());
     }
    
   } catch (error) {
-    setInput("Error");
+    setResult("Error");
   }
 };
 
@@ -68,7 +70,10 @@ const handleEqual = () => {
             <h1>React Calculator </h1>
             <input type={"text"} value={input} readOnly style={{margin:10,width:"350px",height:"50px",borderRadius:"10px", border:"2px solid orange",  fontSize: "20px",
           textAlign: "right",
-          padding: "10px",}}  ></input>
+          padding: "10px",}}  />
+          <div style={{fontSize: "20px", fontWeight: "bold", color: "grey", minHeight: "30px"}}>
+            {result}
+          </div>
           {/* <p>{input}</p> */}
            {buttons.map((row,rowIndex)=>(
             <div key={rowIndex} style={{marginTop:10}}>
